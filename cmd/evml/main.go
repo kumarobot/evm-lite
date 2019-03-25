@@ -1,7 +1,7 @@
 package main
 
 import (
-	cmd "github.com/mosaicnetworks/evm-lite/cmd/evml/commands"
+	cmd "github.com/bear987978897/evm-lite/cmd/evml/commands"
 )
 
 func main() {
@@ -12,6 +12,7 @@ func main() {
 		cmd.NewSoloCmd(),
 		cmd.NewBabbleCmd(),
 		cmd.NewRaftCmd(),
+                cmd.NewTendermintCmd(),
 		cmd.VersionCmd)
 
 	//Do not print usage when error occurs

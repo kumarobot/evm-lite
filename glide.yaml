@@ -1,4 +1,4 @@
-package: github.com/mosaicnetworks/evm-lite
+package: github.com/bear987978897/evm-lite
 import:
 - package: github.com/mosaicnetworks/babble
   version: =0.4.1

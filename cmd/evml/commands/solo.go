@@ -6,8 +6,8 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/mosaicnetworks/evm-lite/src/consensus/solo"
-	"github.com/mosaicnetworks/evm-lite/src/engine"
+	"github.com/bear987978897/evm-lite/src/consensus/solo"
+	"github.com/bear987978897/evm-lite/src/engine"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"

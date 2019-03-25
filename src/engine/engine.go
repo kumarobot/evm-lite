@@ -1,10 +1,10 @@
 package engine
 
 import (
-	"github.com/mosaicnetworks/evm-lite/src/config"
-	"github.com/mosaicnetworks/evm-lite/src/consensus"
-	"github.com/mosaicnetworks/evm-lite/src/service"
-	"github.com/mosaicnetworks/evm-lite/src/state"
+	"github.com/bear987978897/evm-lite/src/config"
+	"github.com/bear987978897/evm-lite/src/consensus"
+	"github.com/bear987978897/evm-lite/src/service"
+	"github.com/bear987978897/evm-lite/src/state"
 	"github.com/sirupsen/logrus"
 )
 

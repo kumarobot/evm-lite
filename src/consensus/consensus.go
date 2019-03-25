@@ -1,8 +1,8 @@
 package consensus
 
 import (
-	"github.com/mosaicnetworks/evm-lite/src/service"
-	"github.com/mosaicnetworks/evm-lite/src/state"
+	"github.com/bear987978897/evm-lite/src/service"
+	"github.com/bear987978897/evm-lite/src/state"
 )
 
 // Consensus is the interface that abstracts the consensus system

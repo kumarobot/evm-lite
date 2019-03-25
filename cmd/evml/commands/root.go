@@ -1,7 +1,7 @@
 package commands
 
 import (
-	_config "github.com/mosaicnetworks/evm-lite/src/config"
+	_config "github.com/bear987978897/evm-lite/src/config"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
