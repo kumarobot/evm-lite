@@ -1,10 +1,10 @@
 package babble
 
 import (
-	_babble "github.com/mosaicnetworks/babble/src/babble"
 	"github.com/bear987978897/evm-lite/src/config"
 	"github.com/bear987978897/evm-lite/src/service"
 	"github.com/bear987978897/evm-lite/src/state"
+	_babble "github.com/mosaicnetworks/babble/src/babble"
 	"github.com/sirupsen/logrus"
 )
 

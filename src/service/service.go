@@ -7,9 +7,9 @@ import (
 	"strings"
 	"sync"
 
+	"github.com/bear987978897/evm-lite/src/state"
 	"github.com/ethereum/go-ethereum/accounts/keystore"
 	"github.com/gorilla/mux"
-	"github.com/bear987978897/evm-lite/src/state"
 	"github.com/sirupsen/logrus"
 )
 

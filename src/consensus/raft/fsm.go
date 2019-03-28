@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"io"
 
+	"github.com/bear987978897/evm-lite/src/state"
 	_ethCommon "github.com/ethereum/go-ethereum/common"
 	_raft "github.com/hashicorp/raft"
-	"github.com/bear987978897/evm-lite/src/state"
 	"github.com/sirupsen/logrus"
 )
 

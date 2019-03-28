@@ -12,7 +12,7 @@ func main() {
 		cmd.NewSoloCmd(),
 		cmd.NewBabbleCmd(),
 		cmd.NewRaftCmd(),
-                cmd.NewTendermintCmd(),
+		cmd.NewTendermintCmd(),
 		cmd.VersionCmd)
 
 	//Do not print usage when error occurs
