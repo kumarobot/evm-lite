@@ -4,12 +4,8 @@ import (
     "fmt"
     "os"
 
-    _tmConfig "github.com/tendermint/tendermint/config"
-    _tmProxy "github.com/tendermint/tendermint/proxy"
-    _p2p "github.com/tendermint/tendermint/p2p"
-    _node "github.com/tendermint/tendermint/node"
-    _types "github.com/tendermint/tendermint/abci/types"
-    _privval "github.com/tendermint/tendermint/privval"
+    p2p "github.com/tendermint/tendermint/p2p"
+    node "github.com/tendermint/tendermint/node"
     rpcclient "github.com/tendermint/tendermint/rpc/client"
     "github.com/bear987978897/evm-lite/src/config"
     "github.com/bear987978897/evm-lite/src/service"
@@ -20,7 +16,7 @@ import (
 
 type Tendermint struct {
     config      *config.TmConfig
-    node        *_node.Node
+    node        *node.Node
     ethService  *service.Service
     ethState    *state.State
     logger      *logrus.Logger
@@ -34,44 +30,6 @@ func NewTendermint(config *config.TmConfig, logger *logrus.Logger) *Tendermint {
     }
 }
 
-func DefaultNewNodeWithApp(config *_tmConfig.Config, app _types.Application, logger log.Logger) (*_node.Node, error) {
-    // Generate node PrivKey
-    nodeKey, err := _p2p.LoadOrGenNodeKey(config.NodeKeyFile())
-    if err != nil {
-	return nil, err
-    }
-
-    // Convert old PrivValidator if it exists.
-    oldPrivVal := config.OldPrivValidatorFile()
-    newPrivValKey := config.PrivValidatorKeyFile()
-    newPrivValState := config.PrivValidatorStateFile()
-    if _, err := os.Stat(oldPrivVal); !os.IsNotExist(err) {
-	oldPV, err := _privval.LoadOldFilePV(oldPrivVal)
-	if err != nil {
-	    return nil, fmt.Errorf("Error reading OldPrivValidator from %v: %v\n", oldPrivVal, err)
-	}
-        logger.Info(
-            "Upgrading PrivValidator file",
-            "old", oldPrivVal,
-            "newKey", newPrivValKey,
-            "newState", newPrivValState,
-        )
-        oldPV.Upgrade(newPrivValKey, newPrivValState)
-    }
-
-
-    return _node.NewNode(
-        config,
-        _privval.LoadOrGenFilePV(newPrivValKey, newPrivValState),
-        nodeKey,
-        _tmProxy.NewLocalClientCreator(app),
-        _node.DefaultGenesisDocProviderFunc(config),
-        _node.DefaultDBProvider,
-        _node.DefaultMetricsProvider(config.Instrumentation),
-        logger,
-    )
-}
-
 /*******************************************************************************
 IMPLEMENT CONSENSUS INTERFACE
 *******************************************************************************/
@@ -80,19 +38,19 @@ func (t *Tendermint) Init(state *state.State, service *service.Service) error {
 
     t.logger.Debug("INIT")
 
-    t.ethState = state
-    t.ethService = service
-
-    abciApp := NewABCIProxy(state, service, service.GetSubmitCh(), t.logger)
-    logger := log.NewTMLogger(log.NewSyncWriter(os.Stdout))
     realConfig := t.config.ToRealTmConfig()
+    abciApp := NewABCIProxy(state, t.logger)
+    logger := log.NewTMLogger(log.NewSyncWriter(os.Stdout))
     node, err := DefaultNewNodeWithApp(realConfig, abciApp, logger)
-    t.node = node
-    t.rpcclient = rpcclient.NewHTTP(realConfig.RPC.ListenAddress, "/websocket");
 
     if err != nil {
-        panic(err.Error())
+        return err
     }
+
+    t.ethState = state
+    t.ethService = service
+    t.node = node
+    t.rpcclient = rpcclient.NewHTTP(realConfig.RPC.ListenAddress, "/websocket");
 
     return nil
 }
@@ -119,7 +77,7 @@ func (t *Tendermint) Run() error {
 }
 
 func (t *Tendermint) Info() (map[string]string, error) {
-    tmInfo := t.node.NodeInfo().(_p2p.DefaultNodeInfo)
+    tmInfo := t.node.NodeInfo().(p2p.DefaultNodeInfo)
     info := map[string]string{
         "type"                  : "tendermint",
         "id"                    : string(tmInfo.ID()),

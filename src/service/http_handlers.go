@@ -429,14 +429,16 @@ func prepareCallMessage(args SendTxArgs, ks *keystore.KeyStore) (*ethTypes.Messa
     //Todo set default from
 
     //Create Call Message
-    msg := ethTypes.NewMessage(args.From,
-    args.To,
-    0,
-    args.Value,
-    args.Gas,
-    args.GasPrice,
-    common.FromHex(args.Data),
-    false)
+    msg := ethTypes.NewMessage(
+        args.From,
+        args.To,
+        0,
+        args.Value,
+        args.Gas,
+        args.GasPrice,
+        common.FromHex(args.Data),
+        false,
+    )
 
     return &msg, nil
 
@@ -490,7 +492,7 @@ func prepareTransaction(args SendTxArgs, state *state.State, ks *keystore.KeySto
 
 func prepareSendTxArgs(args SendTxArgs) (SendTxArgs, error) {
     if args.Gas == 0 {
-
+        args.Gas = defaultGas
     }
     if args.GasPrice == nil {
         args.GasPrice = big.NewInt(0)

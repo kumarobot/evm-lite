@@ -26,7 +26,7 @@ func NewTendermintCmd() *cobra.Command {
             // TODO
             config.SetDataDir(config.BaseConfig.DataDir)
             logger.WithFields(logrus.Fields{
-                "Babble": config.Babble,
+                "Tendermint": config.Tendermint,
             }).Debug("Config")
             return nil
         },
