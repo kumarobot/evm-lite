@@ -42,7 +42,6 @@ func (t *Tendermint) Init(state *state.State, service *service.Service) error {
 	abciApp := NewABCIProxy(state, t.logger)
 	logger := log.NewTMLogger(log.NewSyncWriter(os.Stdout))
 	node, err := DefaultNewNodeWithApp(realConfig, abciApp, logger)
-
 	if err != nil {
 		return err
 	}
