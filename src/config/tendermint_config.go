@@ -10,14 +10,12 @@ var (
 	defaultTmDir = fmt.Sprintf("%s/tendermint", DefaultDataDir)
 )
 
-// BabbleConfig contains the configuration of a Babble node
 type TmConfig struct {
-	// Directory containing priv_key.pem and peers.json files
 	DataDir    string `mapstructure:"datadir"`
 	RealConfig *tmConfig.Config
 }
 
-// DefaultBabbleConfig returns the default configuration for a Babble node
+// DefaultTmConfig returns the default configuration for a Babble node
 func DefaultTmConfig() *TmConfig {
 	var conf = &TmConfig{
 		DataDir:    defaultTmDir,
@@ -35,8 +33,7 @@ func (c *TmConfig) SetDataDir(datadir string) {
 	}
 }
 
-// ToRealBabbleConfig converts an evm-lite/src/config.BabbleConfig to a
-// babble/src/babble.BabbleConfig as used by Babble
+// ToRealTmConfig converts the config to real Tendermint config
 func (c *TmConfig) ToRealTmConfig() *tmConfig.Config {
 	return c.RealConfig
 }
