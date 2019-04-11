@@ -57,6 +57,7 @@ func (t *Tendermint) Init(state *state.State, service *service.Service) error {
 func (t *Tendermint) Run() error {
 	submitCh := t.ethService.GetSubmitCh()
 	if err := t.node.Start(); err != nil {
+		fmt.Println(err)
 		return fmt.Errorf("Failed to start node: %v", err)
 	}
 	t.logger.Info("Started node", "nodeInfo", t.node.Switch().NodeInfo())

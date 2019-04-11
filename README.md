@@ -299,6 +299,12 @@ host:-$ curl http://[api_addr]/info | json_pp
 
 ```
 
+## Call contract without state change
+The ```/call``` endpoint allows calling SmartContract code for READONLY operations.
+these calls will NOT modify the EVM state.
+
+The API input format is just like ```\tx``` endpoint, but will return the return data.
+
 ## CLIENT
 
 Please refer to [EVM-Lite Client](https://github.com/mosaicnetworks/evm-lite-client)
