@@ -272,6 +272,12 @@ host:~$ curl -X POST http://[api_addr]/rawtx -d '0xf8628080830f424094564686380e2
 }
 ```
 
+### Call contract without state change
+The ```/call``` endpoint allows calling SmartContract code for READONLY operations.
+these calls will NOT modify the EVM state.
+
+The API input format is just like ```\tx``` endpoint, but will return the return data.
+
 ## Get consensus info
 
 The ```/info``` endpoint exposes a map of information provided by the consensus
@@ -298,12 +304,6 @@ host:-$ curl http://[api_addr]/info | json_pp
 }
 
 ```
-
-## Call contract without state change
-The ```/call``` endpoint allows calling SmartContract code for READONLY operations.
-these calls will NOT modify the EVM state.
-
-The API input format is just like ```\tx``` endpoint, but will return the return data.
 
 ## CLIENT
 
