@@ -47,7 +47,8 @@ func ParseConfig() (*tmConfig.Config, error) {
 	if err != nil {
 		return nil, err
 	}
-	conf.SetRoot(viper.GetString("tendermint.home"))
+
+	conf.SetRoot(viper.GetString("datadir") + "/tendermint")
 	tmConfig.EnsureRoot(conf.RootDir)
 	if err = conf.ValidateBasic(); err != nil {
 		return nil, fmt.Errorf("Error in config file: %v", err)
