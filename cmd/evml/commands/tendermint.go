@@ -14,7 +14,7 @@ import (
 
 // AddTendermintFlags adds flags to the Tendermint command
 func AddTendermintFlags(cmd *cobra.Command) {
-	cmd.Flags().String("tendermint.home", config.Tendermint.DataDir, "Tendermint home directory")
+	// cmd.Flags().String("tendermint.home", config.Tendermint.DataDir, "Tendermint home directory")
 }
 
 // Viber load config
@@ -24,8 +24,8 @@ func tmBindFlagsLoadViper(cmd *cobra.Command) error {
 		return err
 	}
 
-	homeDir := viper.GetString("tendermint.home")
-	viper.Set("tendermint.home", homeDir)
+	homeDir := viper.GetString("datadir") + "/tendermint"
+	// viper.Set("tendermint.home", homeDir)
 	viper.SetConfigName("config")                         // name of config file (without extension)
 	viper.AddConfigPath(homeDir)                          // search root directory
 	viper.AddConfigPath(filepath.Join(homeDir, "config")) // search root directory /config
@@ -67,6 +67,7 @@ func NewTendermintCmd() *cobra.Command {
 				"Tendermint": config.Tendermint,
 			}).Debug("Config")
 
+			tmBindFlagsLoadViper(cmd)
 			config.Tendermint.RealConfig, _ = ParseConfig()
 			return nil
 		},
@@ -74,7 +75,6 @@ func NewTendermintCmd() *cobra.Command {
 	}
 
 	AddTendermintFlags(cmd)
-	tmBindFlagsLoadViper(cmd)
 
 	return cmd
 }
