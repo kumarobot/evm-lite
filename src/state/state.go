@@ -60,8 +60,8 @@ func NewState(logger *logrus.Logger, dbFile string, dbCache int, genesisFile str
 	s := &State{
 		db:          db,
 		signer:      ethTypes.NewEIP155Signer(chainID),
-		chainConfig: params.ChainConfig{ChainID: chainID},
-		vmConfig:    vm.Config{Tracer: vm.NewStructLogger(nil)},
+		chainConfig: *params.TestnetChainConfig,
+		vmConfig:    vm.Config{Tracer: vm.NewStructLogger(nil), Debug: true},
 		genesisFile: genesisFile,
 		logger:      logger,
 	}
