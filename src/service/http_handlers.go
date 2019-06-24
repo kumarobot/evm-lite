@@ -37,10 +37,18 @@ func accountHandler(w http.ResponseWriter, r *http.Request, m *Service) {
 
 	balance := m.state.GetBalance(address)
 	nonce := m.state.GetNonce(address)
+	code := hexutil.Encode(m.state.GetCode(address))
+	if code == "0x" {
+		code = ""
+	} else {
+		m.logger.WithField("code", code).Debug("GET account")
+	}
+
 	account := JsonAccount{
 		Address: address.Hex(),
 		Balance: balance,
 		Nonce:   nonce,
+		Code:    code,
 	}
 
 	js, err := json.Marshal(account)
@@ -71,11 +79,16 @@ func accountsHandler(w http.ResponseWriter, r *http.Request, m *Service) {
 	for _, account := range m.keyStore.Accounts() {
 		balance := m.state.GetBalance(account.Address)
 		nonce := m.state.GetNonce(account.Address)
+		code := hexutil.Encode(m.state.GetCode(account.Address))
+		if code == "0x" {
+			code = ""
+		}
 		al.Accounts = append(al.Accounts,
 			JsonAccount{
 				Address: account.Address.Hex(),
 				Balance: balance,
 				Nonce:   nonce,
+				Code:    code,
 			})
 	}
 
@@ -127,7 +140,7 @@ func callHandler(w http.ResponseWriter, r *http.Request, m *Service) {
 		return
 	}
 
-	res := JsonCallRes{Data: common.ToHex(data)}
+	res := JsonCallRes{Data: hexutil.Encode(data)}
 	js, err := json.Marshal(res)
 	if err != nil {
 		m.logger.WithError(err).Error("Marshaling JSON response")
