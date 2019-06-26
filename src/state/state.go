@@ -58,9 +58,19 @@ func NewState(logger *logrus.Logger, dbFile string, dbCache int, genesisFile str
 	}
 
 	s := &State{
-		db:          db,
-		signer:      ethTypes.NewEIP155Signer(chainID),
-		chainConfig: *params.TestnetChainConfig,
+		db:     db,
+		signer: ethTypes.NewEIP155Signer(chainID),
+		chainConfig: params.ChainConfig{
+			ChainID:             chainID,
+			HomesteadBlock:      big.NewInt(0),
+			EIP150Block:         big.NewInt(0),
+			EIP150Hash:          common.HexToHash("0x41941023680923e0fe4d74a34bdac8141f2540e3ae90623718e47d66d1ca4a2d"),
+			EIP155Block:         big.NewInt(0),
+			EIP158Block:         big.NewInt(0),
+			ByzantiumBlock:      big.NewInt(0),
+			ConstantinopleBlock: big.NewInt(0),
+			PetersburgBlock:     big.NewInt(0),
+		},
 		vmConfig:    vm.Config{Tracer: vm.NewStructLogger(nil), Debug: true},
 		genesisFile: genesisFile,
 		logger:      logger,
