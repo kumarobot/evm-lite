@@ -33,6 +33,11 @@ func NewABCIProxy(
 /********************************************************
 Implement Tendermint ABCI application
 *********************************************************/
+// TODO: Implement CheckTx
+func (p *ABCIProxy) CheckTx(tx []byte) types.ResponseCheckTx {
+	return types.ResponseCheckTx{Code: types.CodeTypeOK}
+}
+
 func (p *ABCIProxy) BeginBlock(req types.RequestBeginBlock) types.ResponseBeginBlock {
 	p.blockHash = common.BytesToHash(req.Hash)
 
@@ -56,6 +61,7 @@ func (p *ABCIProxy) DeliverTx(tx []byte) types.ResponseDeliverTx {
 	return types.ResponseDeliverTx{Code: types.CodeTypeOK}
 }
 
+// TODO: Return application state root
 func (p *ABCIProxy) Commit() types.ResponseCommit {
 	p.txIndex = 0
 
