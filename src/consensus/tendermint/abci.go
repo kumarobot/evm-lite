@@ -44,7 +44,7 @@ func (p *ABCIProxy) BeginBlock(req types.RequestBeginBlock) types.ResponseBeginB
 func (p *ABCIProxy) DeliverTx(tx []byte) types.ResponseDeliverTx {
 	err := p.state.ApplyTransaction(tx, p.txIndex, p.blockHash)
 	if err != nil {
-		p.logger.Panic("DeliverTx Error: ", err)
+		p.logger.Error("DeliverTx Error: ", err)
 		return types.ResponseDeliverTx{Code: 1}
 	}
 	p.txIndex++
@@ -61,7 +61,7 @@ func (p *ABCIProxy) Commit() types.ResponseCommit {
 
 	hash, err := p.state.Commit()
 	if err != nil {
-		p.logger.Panic("Commit Error: ", err)
+		p.logger.Error("Commit Error: ", err)
 		return types.ResponseCommit{}
 	}
 	p.logger.Debug("Block commited: ", hash)
