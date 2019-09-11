@@ -2,7 +2,6 @@ package tendermint
 
 import (
 	"encoding/hex"
-
 	"github.com/bear987978897/evm-lite/src/state"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/sirupsen/logrus"
@@ -17,6 +16,7 @@ type ABCIProxy struct {
 	blockHash common.Hash
 	txIndex   int
 }
+
 
 func NewABCIProxy(
 	state *state.State,
@@ -70,7 +70,15 @@ func (p *ABCIProxy) Commit() types.ResponseCommit {
 		p.logger.Error("Commit Error: ", err)
 		return types.ResponseCommit{}
 	}
-	p.logger.Debug("Block commited: ", hash)
+	//p.logger.Debug("Block commited: ", hash)
+	s := hash.Hex()
+	//p.logger.Debug("hash.Hex: ", s)
+	data, err := hex.DecodeString(s[2:])
+	if err != nil{
+		p.logger.Debug("data error: ", err)
+	}
+	//p.logger.Debug("Byte data: ", data)		
 
-	return types.ResponseCommit{}
+	return types.ResponseCommit{Data: data}
+	//return types.ResponseCommit{}
 }
