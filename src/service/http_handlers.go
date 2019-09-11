@@ -2,12 +2,14 @@ package service
 
 import (
 	"bytes"
+	"encoding/hex"
 	"encoding/json"
 	"fmt"
 	"html/template"
 	"io/ioutil"
 	"math/big"
 	"net/http"
+	"crypto/sha256"
 
 	"github.com/bear987978897/evm-lite/src/service/templates"
 	"github.com/bear987978897/evm-lite/src/state"
@@ -220,8 +222,13 @@ func transactionHandler(w http.ResponseWriter, r *http.Request, m *Service) {
 	m.logger.Debug("submitting tx")
 	m.submitCh <- data
 	m.logger.Debug("submitted tx")
-
-	res := JsonTxRes{TxHash: tx.Hash().Hex()}
+	
+	m.logger.WithField("tx_data", data).Debug("Get Transaction Data")
+	s:= sha256.Sum256(data)
+	x := "0x" + hex.EncodeToString(s[:])
+	m.logger.WithField("sha256: ", x).Debug("SHA256")
+	res := JsonTxRes{TxHash: x}
+	//res := JsonTxRes{TxHash: tx.Hash().Hex()}
 	js, err := json.Marshal(res)
 	if err != nil {
 		m.logger.WithError(err).Error("Marshalling JSON response")
@@ -297,8 +304,12 @@ func rawTransactionHandler(w http.ResponseWriter, r *http.Request, m *Service) {
 	m.logger.Debug("submitting tx")
 	m.submitCh <- rawTxBytes
 	m.logger.Debug("submitted tx")
-
-	res := JsonTxRes{TxHash: t.Hash().Hex()}
+	
+	s:= sha256.Sum256(rawTxBytes)
+        x := "0x" + hex.EncodeToString(s[:])
+	m.logger.WithField("sha256: ", x).Debug("SHA256")
+	res := JsonTxRes{TxHash: x}
+	//res := JsonTxRes{TxHash: t.Hash().Hex()}
 	js, err := json.Marshal(res)
 	if err != nil {
 		m.logger.WithError(err).Error("Marshalling JSON response")
@@ -327,6 +338,7 @@ func transactionReceiptHandler(w http.ResponseWriter, r *http.Request, m *Servic
 	m.logger.WithField("tx_hash", txHash.Hex()).Debug("GET tx")
 
 	tx, err := m.state.GetTransaction(txHash)
+	//m.logger.WithField("Get_Transaction", tx).Debug("Get Transation ")
 	if err != nil {
 		m.logger.WithError(err).Error("Getting Transaction")
 		http.Error(w, err.Error(), http.StatusInternalServerError)

@@ -289,7 +289,6 @@ func (s *State) GetTransaction(hash common.Hash) (*ethTypes.Transaction, error) 
 		s.logger.WithError(err).Error("Decoding Transaction")
 		return nil, err
 	}
-
 	return &tx, nil
 }
 
